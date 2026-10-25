@@ -7,15 +7,15 @@
 }
 
 html, body {
-  height: 100%;
+  min-height: 100%;
   width: 100%;
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
+  background-color: var(--bg-app);
+  color: var(--text-main);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 1.5;
-  overflow-x: hidden;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
 }
 
 #root {
@@ -24,32 +24,38 @@ html, body {
   flex-direction: column;
 }
 
+/* Tabular figures for changing numbers */
+.num-tabular,
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
 /* Accessible focus styling */
 :focus-visible {
-  outline: 2px solid var(--border-highlight);
+  outline: 2px solid var(--border-focus);
   outline-offset: 2px;
 }
 
-/* Custom scrollbars */
+/* Clean, unobtrusive scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--bg-primary);
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border-medium);
+  background: var(--border-strong);
   border-radius: var(--radius-full);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--accent-primary);
+  background: var(--text-muted);
 }
 
-/* Typography utilities */
+/* Utility classes */
 .font-mono {
   font-family: var(--font-mono);
 }

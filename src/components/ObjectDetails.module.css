@@ -1,12 +1,17 @@
-.container {
-  background-color: var(--bg-card);
+.panel {
+  background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
-  padding: 18px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  min-height: 540px;
+  gap: 14px;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.15s ease;
+}
+
+.panel:hover {
+  border-color: var(--border-strong);
 }
 
 .emptyState {
@@ -14,14 +19,13 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: 10px;
   color: var(--text-muted);
-  height: 100%;
-  padding: 40px 20px;
+  padding: 40px 16px;
   text-align: center;
 }
 
-.headerRow {
+.header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -30,240 +34,240 @@
   border-bottom: 1px solid var(--border-subtle);
 }
 
-.identityInfo {
+.identityArea {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.titleRow {
+.callsignRow {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: 8px;
-  flex-wrap: wrap;
 }
 
 .callsign {
-  font-size: 1.15rem;
+  font-size: 1.125rem;
   font-weight: 700;
-  letter-spacing: 0.05em;
-  color: var(--text-primary);
+  color: var(--text-main);
   font-family: var(--font-mono);
 }
 
-.idBadge {
-  font-size: 0.72rem;
-  padding: 2px 6px;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-medium);
-  border-radius: var(--radius-sm);
-  color: var(--accent-primary);
+.idTag {
+  font-size: 0.6875rem;
   font-family: var(--font-mono);
+  color: var(--text-muted);
 }
 
 .typeRow {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 0.76rem;
+  gap: 6px;
+  font-size: 0.75rem;
   color: var(--text-secondary);
 }
 
-.classificationBadge {
-  padding: 2px 8px;
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 7px;
   border-radius: var(--radius-full);
-  font-size: 0.7rem;
+  font-size: 0.6875rem;
   font-weight: 600;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
-.classificationFriendly {
-  background: rgba(16, 185, 129, 0.15);
-  border: 1px solid rgba(16, 185, 129, 0.4);
-  color: var(--risk-low);
+.badgeFriendly {
+  background: var(--risk-low-bg);
+  border: 1px solid var(--risk-low-border);
+  color: var(--risk-low-text);
 }
 
-.classificationCommercial {
-  background: rgba(56, 189, 248, 0.15);
-  border: 1px solid rgba(56, 189, 248, 0.4);
-  color: var(--accent-primary);
+.badgeCommercial {
+  background: var(--accent-secondary-light);
+  border: 1px solid #bae6fd;
+  color: #0369a1;
 }
 
-.classificationUnauthorized {
-  background: rgba(239, 68, 68, 0.15);
-  border: 1px solid rgba(239, 68, 68, 0.4);
-  color: var(--risk-high);
+.badgeUnauthorized {
+  background: var(--risk-high-bg);
+  border: 1px solid var(--risk-high-border);
+  color: var(--risk-high-text);
 }
 
-.classificationUnknown {
-  background: rgba(245, 158, 11, 0.15);
-  border: 1px solid rgba(245, 158, 11, 0.4);
-  color: var(--risk-medium);
+.badgeUnknown {
+  background: var(--risk-medium-bg);
+  border: 1px solid var(--risk-medium-border);
+  color: var(--risk-medium-text);
 }
 
 /* Risk Score Box */
-.riskScoreBox {
+.riskCard {
+  background: var(--bg-surface-subtle);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  gap: 2px;
+  gap: 6px;
+}
+
+.riskHeaderRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .riskBadge {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 4px 10px;
-  border-radius: var(--radius-sm);
-  font-size: 0.85rem;
-  font-weight: 700;
-  font-family: var(--font-mono);
-  text-transform: uppercase;
-}
-
-.riskLow {
-  background: var(--risk-low-bg);
-  border: 1px solid var(--risk-low-border);
-  color: var(--risk-low);
-}
-
-.riskMedium {
-  background: var(--risk-medium-bg);
-  border: 1px solid var(--risk-medium-border);
-  color: var(--risk-medium);
-}
-
-.riskHigh {
-  background: var(--risk-high-bg);
-  border: 1px solid var(--risk-high-border);
-  color: var(--risk-high);
-}
-
-.riskScoreNum {
+  gap: 5px;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
   font-size: 0.75rem;
-  color: var(--text-muted);
-  font-family: var(--font-mono);
+  font-weight: 700;
 }
 
-/* Telemetry Grid */
+.riskScoreVal {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-main);
+  font-variant-numeric: tabular-nums;
+}
+
+.riskMeter {
+  height: 4px;
+  border-radius: var(--radius-full);
+  background: var(--border-subtle);
+  overflow: hidden;
+}
+
+.riskMeterFill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width 0.3s ease;
+}
+
+/* Primary Telemetry Grid */
 .telemetryGrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  gap: 8px;
 }
 
-.telemetryCell {
-  background: var(--bg-secondary);
+.metricCell {
+  background: var(--bg-surface-subtle);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-sm);
-  padding: 8px 12px;
+  padding: 8px 10px;
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
 
-.telemetryLabel {
-  font-size: 0.72rem;
+.metricLabel {
+  font-size: 0.6875rem;
   color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  font-weight: 500;
 }
 
-.telemetryValue {
+.metricValue {
   font-family: var(--font-mono);
-  font-size: 0.95rem;
+  font-size: 0.875rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-main);
+  font-variant-numeric: tabular-nums;
   display: flex;
   align-items: baseline;
-  gap: 4px;
+  gap: 3px;
 }
 
-.telemetryUnit {
-  font-size: 0.7rem;
+.metricUnit {
+  font-size: 0.6875rem;
   color: var(--text-secondary);
   font-weight: 400;
 }
 
-/* Risk Factor Section */
-.factorSection {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.factorHeader {
+/* Zone Proximity Banner */
+.zoneBanner {
+  background: #f8fafc;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
+}
+
+/* Expandable Factor Section */
+.collapsibleToggle {
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 0.75rem;
   font-weight: 600;
   color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  cursor: pointer;
+  padding: 4px 0;
+  transition: color 0.12s ease;
+}
+
+.collapsibleToggle:hover {
+  color: var(--text-main);
 }
 
 .factorList {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  max-height: 180px;
-  overflow-y: auto;
-  padding-right: 4px;
+  margin-top: 4px;
 }
 
 .factorItem {
-  background: var(--bg-secondary);
+  background: var(--bg-surface-subtle);
+  border: 1px solid var(--border-subtle);
   border-left: 3px solid var(--accent-primary);
-  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-  padding: 8px 10px;
+  border-radius: 0 var(--radius-xs) var(--radius-xs) 0;
+  padding: 6px 10px;
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 2px;
   font-size: 0.75rem;
 }
 
-.factorItemHeader {
+.factorHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-main);
 }
 
-.factorContribution {
+.factorPoints {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
-  padding: 1px 5px;
-  border-radius: var(--radius-sm);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
 }
 
-.contribPositive {
-  background: rgba(239, 68, 68, 0.2);
-  color: #f87171;
-}
-
-.contribNegative {
-  background: rgba(16, 185, 129, 0.2);
+.ptsNegative {
   color: var(--risk-low);
 }
 
-.contribNeutral {
-  background: rgba(148, 163, 184, 0.2);
-  color: var(--text-secondary);
-}
-
-.factorDesc {
-  color: var(--text-secondary);
-  line-height: 1.35;
+.ptsPositive {
+  color: var(--risk-high);
 }
 
 .disclaimer {
-  font-size: 0.68rem;
+  font-size: 0.6875rem;
   color: var(--text-muted);
-  background: rgba(0, 0, 0, 0.25);
-  border: 1px dashed var(--border-subtle);
-  border-radius: var(--radius-sm);
-  padding: 6px 8px;
-  line-height: 1.3;
+  line-height: 1.35;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 8px;
+  margin-top: auto;
 }

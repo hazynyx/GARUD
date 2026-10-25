@@ -1,60 +1,80 @@
 :root {
-  /* Surface colors */
-  --bg-primary: #070b12;
-  --bg-secondary: #0d1524;
-  --bg-card: #111b2e;
-  --bg-card-hover: #16243d;
-  --bg-card-active: #1c2e4f;
-  --bg-banner: #451a03;
-  --banner-border: #d97706;
+  /* Surface colors - Modern Bento Light Palette */
+  --bg-app: #f8fafc;
+  --bg-surface: #ffffff;
+  --bg-surface-subtle: #f1f5f9;
+  --bg-surface-hover: #e2e8f0;
+  --bg-surface-active: #cbd5e1;
 
-  /* Accent & Radar */
-  --radar-bg: #050910;
-  --radar-grid: #172a45;
-  --radar-grid-strong: #25446e;
-  --radar-ring: #1e3a5f;
-  --radar-sweep: rgba(56, 189, 248, 0.25);
-  --restricted-zone: rgba(239, 68, 68, 0.22);
+  /* Text colors */
+  --text-main: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --text-inverse: #ffffff;
+
+  /* Borders & Dividers */
+  --border-subtle: #e2e8f0;
+  --border-strong: #cbd5e1;
+  --border-focus: #0f766e;
+
+  /* Defense-Tech Accents */
+  --accent-primary: #0f766e;       /* Deep tactical emerald */
+  --accent-primary-hover: #115e59;
+  --accent-primary-light: #f0fdf4;
+  --accent-primary-border: #86efac;
+
+  --accent-secondary: #0284c7;     /* Precision aviation blue */
+  --accent-secondary-light: #f0f9ff;
+
+  /* Risk Categories - Muted, Controlled Tiers */
+  --risk-low: #059669;
+  --risk-low-bg: #ecfdf5;
+  --risk-low-border: #a7f3d0;
+  --risk-low-text: #065f46;
+
+  --risk-medium: #d97706;
+  --risk-medium-bg: #fffbeb;
+  --risk-medium-border: #fde68a;
+  --risk-medium-text: #92400e;
+
+  --risk-high: #dc2626;
+  --risk-high-bg: #fef2f2;
+  --risk-high-border: #fecaca;
+  --risk-high-text: #991b1b;
+
+  /* Simulation Banner */
+  --banner-bg: #fff7ed;
+  --banner-border: #fed7aa;
+  --banner-text: #9a3412;
+
+  /* Radar Aperture (Purpose-built dark tactical viewport) */
+  --radar-bg: #090e17;
+  --radar-surface: #0d1522;
+  --radar-grid: #1a283e;
+  --radar-grid-strong: #253957;
+  --radar-ring: #162234;
+  --radar-sweep: rgba(14, 165, 233, 0.22);
+  --radar-text: #94a3b8;
+  --radar-text-bright: #f8fafc;
+  --restricted-zone: rgba(220, 38, 38, 0.18);
   --restricted-zone-border: #ef4444;
-  --buffer-zone: rgba(245, 158, 11, 0.12);
+  --buffer-zone: rgba(217, 119, 6, 0.12);
   --buffer-zone-border: #f59e0b;
 
-  /* Status & Risk */
-  --risk-low: #10b981;
-  --risk-low-bg: rgba(16, 185, 129, 0.12);
-  --risk-low-border: rgba(16, 185, 129, 0.35);
+  /* Elevation Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+  --shadow-card: 0 1px 3px 0 rgba(15, 23, 42, 0.06), 0 1px 2px -1px rgba(15, 23, 42, 0.04);
 
-  --risk-medium: #f59e0b;
-  --risk-medium-bg: rgba(245, 158, 11, 0.12);
-  --risk-medium-border: rgba(245, 158, 11, 0.35);
-
-  --risk-high: #ef4444;
-  --risk-high-bg: rgba(239, 68, 68, 0.15);
-  --risk-high-border: rgba(239, 68, 68, 0.45);
-
-  /* Brand / UI */
-  --accent-primary: #38bdf8;
-  --accent-secondary: #06b6d4;
-  --accent-glow: rgba(56, 189, 248, 0.2);
-
-  /* Typography */
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
-  --text-accent: #38bdf8;
-
-  /* Borders */
-  --border-subtle: #1e293b;
-  --border-medium: #2a3b53;
-  --border-highlight: #38bdf8;
-
-  /* Radii */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
+  /* Geometry & Radii */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
   --radius-full: 9999px;
 
   /* Typography */
-  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "Roboto Mono", Menlo, Monaco, Consolas, monospace;
 }

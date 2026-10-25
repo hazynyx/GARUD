@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
-import { Crosshair, ZoomIn, ZoomOut, RotateCcw, Eye, Compass } from 'lucide-react';
+import { Crosshair, ZoomIn, ZoomOut, RotateCcw, Compass, Route } from 'lucide-react';
 import styles from './RadarView.module.css';
 import { TrackedObject, RestrictedZone } from '../features/simulation/types';
 import { predictTrajectory } from '../features/tracking/prediction';
@@ -79,7 +79,7 @@ export const RadarView: React.FC<RadarViewProps> = ({
     const height = canvas.height / (window.devicePixelRatio || 1);
 
     let closestObj: TrackedObject | null = null;
-    let minScreenDist = 24; // 24px tap / click radius
+    let minScreenDist = 24;
 
     for (const obj of objects) {
       const { sx, sy } = worldToScreen(obj.x, obj.y, width, height);
@@ -95,7 +95,6 @@ export const RadarView: React.FC<RadarViewProps> = ({
     }
   };
 
-  // Mouse move on canvas for hover feedback & coordinate display
   const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -110,7 +109,6 @@ export const RadarView: React.FC<RadarViewProps> = ({
     const world = screenToWorld(mouseX, mouseY, width, height);
     setMouseCoord({ x: world.worldX, y: world.worldY });
 
-    // Find hover
     let hovered: string | null = null;
     for (const obj of objects) {
       const { sx, sy } = worldToScreen(obj.x, obj.y, width, height);
@@ -143,7 +141,6 @@ export const RadarView: React.FC<RadarViewProps> = ({
       const dpr = window.devicePixelRatio || 1;
       const rect = canvas.getBoundingClientRect();
 
-      // Ensure crisp pixel density
       if (canvas.width !== rect.width * dpr || canvas.height !== rect.height * dpr) {
         canvas.width = rect.width * dpr;
         canvas.height = rect.height * dpr;
@@ -156,10 +153,10 @@ export const RadarView: React.FC<RadarViewProps> = ({
       const height = rect.height;
       const cx = width / 2;
       const cy = height / 2;
-      const radiusPx = (Math.min(width, height) / 2) * 0.95;
+      const radiusPx = (Math.min(width, height) / 2) * 0.94;
 
-      // 1. Clear background
-      ctx.fillStyle = '#060a12';
+      // 1. Radar Background
+      ctx.fillStyle = '#090e17';
       ctx.fillRect(0, 0, width, height);
 
       // Radar PPI circular boundary clip
@@ -168,11 +165,11 @@ export const RadarView: React.FC<RadarViewProps> = ({
       ctx.arc(cx, cy, radiusPx, 0, Math.PI * 2);
       ctx.clip();
 
-      // Background radial gradient for radar tube feel
+      // Subtle radial backdrop
       const grad = ctx.createRadialGradient(cx, cy, 10, cx, cy, radiusPx);
-      grad.addColorStop(0, '#0a1424');
-      grad.addColorStop(0.7, '#070d18');
-      grad.addColorStop(1, '#04070d');
+      grad.addColorStop(0, '#0d1522');
+      grad.addColorStop(0.7, '#090e17');
+      grad.addColorStop(1, '#060a12');
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, width, height);
 
@@ -182,14 +179,14 @@ export const RadarView: React.FC<RadarViewProps> = ({
         const ringPx = (rangeM / RADAR_MAX_RANGE_M) * (Math.min(width, height) / 2) * zoomLevel;
         ctx.beginPath();
         ctx.arc(cx, cy, ringPx, 0, Math.PI * 2);
-        ctx.strokeStyle = rangeM === 5000 ? '#264268' : '#14253c';
+        ctx.strokeStyle = rangeM === 5000 ? '#1e2e47' : '#142033';
         ctx.lineWidth = rangeM === 5000 ? 1.5 : 1;
         ctx.stroke();
 
-        // Range Label
+        // Monospace range text label
         ctx.font = '10px ui-monospace, SFMono-Regular, monospace';
-        ctx.fillStyle = '#476385';
-        ctx.fillText(`${rangeM / 1000}km`, cx + 4, cy - ringPx + 12);
+        ctx.fillStyle = '#475e7a';
+        ctx.fillText(`${rangeM / 1000} km`, cx + 6, cy - ringPx + 12);
       }
 
       // 3. Azimuth Crosshairs and Bearings (every 30 degrees)
@@ -201,16 +198,15 @@ export const RadarView: React.FC<RadarViewProps> = ({
         ctx.beginPath();
         ctx.moveTo(cx, cy);
         ctx.lineTo(outerX, outerY);
-        ctx.strokeStyle = deg % 90 === 0 ? '#1b3252' : '#0f1f33';
+        ctx.strokeStyle = deg % 90 === 0 ? '#1a283e' : '#101a2b';
         ctx.lineWidth = deg % 90 === 0 ? 1.2 : 0.8;
         ctx.stroke();
 
-        // Azimuth degree marks at edge
-        const labelRad = ((deg - 90) * Math.PI) / 180;
-        const lx = cx + Math.cos(labelRad) * (radiusPx - 14);
-        const ly = cy + Math.sin(labelRad) * (radiusPx - 14);
+        // Azimuth label
+        const lx = cx + Math.cos(rad) * (radiusPx - 14);
+        const ly = cy + Math.sin(rad) * (radiusPx - 14);
         ctx.font = '9px ui-monospace, SFMono-Regular, monospace';
-        ctx.fillStyle = '#385375';
+        ctx.fillStyle = '#475e7a';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         const degStr = deg === 0 ? 'N' : deg === 90 ? 'E' : deg === 180 ? 'S' : deg === 270 ? 'W' : `${deg}°`;
@@ -226,9 +222,9 @@ export const RadarView: React.FC<RadarViewProps> = ({
           const bufferPx = zone.warningBufferM * scale;
           ctx.beginPath();
           ctx.arc(zx, zy, bufferPx, 0, Math.PI * 2);
-          ctx.fillStyle = 'rgba(245, 158, 11, 0.06)';
+          ctx.fillStyle = 'rgba(217, 119, 6, 0.05)';
           ctx.fill();
-          ctx.strokeStyle = 'rgba(245, 158, 11, 0.4)';
+          ctx.strokeStyle = 'rgba(217, 119, 6, 0.4)';
           ctx.lineWidth = 1;
           ctx.setLineDash([4, 4]);
           ctx.stroke();
@@ -238,10 +234,10 @@ export const RadarView: React.FC<RadarViewProps> = ({
           const corePx = zone.radiusM * scale;
           ctx.beginPath();
           ctx.arc(zx, zy, corePx, 0, Math.PI * 2);
-          ctx.fillStyle = 'rgba(239, 68, 68, 0.15)';
+          ctx.fillStyle = 'rgba(220, 38, 38, 0.12)';
           ctx.fill();
           ctx.strokeStyle = 'rgba(239, 68, 68, 0.85)';
-          ctx.lineWidth = 1.5;
+          ctx.lineWidth = 1.4;
           ctx.setLineDash([6, 3]);
           ctx.stroke();
           ctx.setLineDash([]);
@@ -252,7 +248,7 @@ export const RadarView: React.FC<RadarViewProps> = ({
           ctx.arc(zx, zy, 3, 0, Math.PI * 2);
           ctx.fill();
 
-          ctx.font = '10px system-ui, sans-serif';
+          ctx.font = '10px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
           ctx.fillStyle = '#fca5a5';
           ctx.textAlign = 'center';
           ctx.fillText(`⛔ ${zone.name}`, zx, zy - corePx - 6);
@@ -264,22 +260,22 @@ export const RadarView: React.FC<RadarViewProps> = ({
       const sweepAngle = sweepAngleRef.current;
 
       const sweepGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, radiusPx);
-      sweepGrad.addColorStop(0, 'rgba(56, 189, 248, 0.3)');
-      sweepGrad.addColorStop(1, 'rgba(56, 189, 248, 0.0)');
+      sweepGrad.addColorStop(0, 'rgba(14, 165, 233, 0.2)');
+      sweepGrad.addColorStop(1, 'rgba(14, 165, 233, 0.0)');
 
       ctx.save();
       ctx.beginPath();
       ctx.moveTo(cx, cy);
-      ctx.arc(cx, cy, radiusPx, sweepAngle - 0.25, sweepAngle, false);
+      ctx.arc(cx, cy, radiusPx, sweepAngle - 0.22, sweepAngle, false);
       ctx.closePath();
       ctx.fillStyle = sweepGrad;
       ctx.fill();
 
-      // Sharp sweep leading line
+      // Leading beam edge
       ctx.beginPath();
       ctx.moveTo(cx, cy);
       ctx.lineTo(cx + Math.cos(sweepAngle) * radiusPx, cy + Math.sin(sweepAngle) * radiusPx);
-      ctx.strokeStyle = 'rgba(56, 189, 248, 0.6)';
+      ctx.strokeStyle = 'rgba(56, 189, 248, 0.5)';
       ctx.lineWidth = 1.2;
       ctx.stroke();
       ctx.restore();
@@ -288,9 +284,8 @@ export const RadarView: React.FC<RadarViewProps> = ({
       for (const obj of objects) {
         const { sx, sy } = worldToScreen(obj.x, obj.y, width, height);
 
-        // Determine color by risk level
         const riskColor =
-          obj.riskLevel === 'high' ? '#ef4444' : obj.riskLevel === 'medium' ? '#f59e0b' : '#10b981';
+          obj.riskLevel === 'high' ? '#dc2626' : obj.riskLevel === 'medium' ? '#d97706' : '#059669';
 
         const isSelected = obj.id === selectedObjectId;
         const isHovered = obj.id === hoveredObjectId;
@@ -305,18 +300,18 @@ export const RadarView: React.FC<RadarViewProps> = ({
               const { sx: wx, sy: wy } = worldToScreen(wp.x, wp.y, width, height);
               ctx.lineTo(wx, wy);
             }
-            ctx.strokeStyle = isSelected ? riskColor : 'rgba(148, 163, 184, 0.35)';
-            ctx.lineWidth = isSelected ? 1.8 : 1.0;
+            ctx.strokeStyle = isSelected ? riskColor : 'rgba(148, 163, 184, 0.3)';
+            ctx.lineWidth = isSelected ? 1.6 : 0.9;
             ctx.setLineDash([3, 4]);
             ctx.stroke();
             ctx.setLineDash([]);
 
-            // Draw small dot on terminal prediction point
+            // Terminal waypoint dot
             const terminalWp = waypoints[waypoints.length - 1];
             const { sx: tx, sy: ty, scale } = worldToScreen(terminalWp.x, terminalWp.y, width, height);
 
             ctx.beginPath();
-            ctx.arc(tx, ty, isSelected ? 3.5 : 2, 0, Math.PI * 2);
+            ctx.arc(tx, ty, isSelected ? 3 : 2, 0, Math.PI * 2);
             ctx.fillStyle = riskColor;
             ctx.fill();
 
@@ -325,17 +320,16 @@ export const RadarView: React.FC<RadarViewProps> = ({
               const uncPx = Math.max(4, terminalWp.uncertaintyRadiusM * scale);
               ctx.beginPath();
               ctx.arc(tx, ty, uncPx, 0, Math.PI * 2);
-              ctx.strokeStyle = 'rgba(56, 189, 248, 0.4)';
+              ctx.strokeStyle = 'rgba(2, 132, 199, 0.4)';
               ctx.lineWidth = 1;
               ctx.stroke();
             }
           }
         }
 
-        // 6b. Velocity Vector Line (Pointing in heading direction)
+        // 6b. Velocity Vector Line
         const headingRad = (((obj.headingDeg % 360) + 360) % 360 * Math.PI) / 180;
-        const vecLen = Math.max(12, Math.min(36, obj.speedMps * 0.9));
-        // Note: heading 0 = North = -Y in screen space, 90 = East = +X
+        const vecLen = Math.max(10, Math.min(32, obj.speedMps * 0.8));
         const vx = sx + Math.sin(headingRad) * vecLen;
         const vy = sy - Math.cos(headingRad) * vecLen;
 
@@ -343,7 +337,7 @@ export const RadarView: React.FC<RadarViewProps> = ({
         ctx.moveTo(sx, sy);
         ctx.lineTo(vx, vy);
         ctx.strokeStyle = riskColor;
-        ctx.lineWidth = 1.5;
+        ctx.lineWidth = 1.4;
         ctx.stroke();
 
         // 6c. Object Marker Symbol
@@ -351,51 +345,50 @@ export const RadarView: React.FC<RadarViewProps> = ({
         ctx.translate(sx, sy);
         ctx.rotate(headingRad);
 
-        // Directional aircraft chevron
         ctx.beginPath();
-        ctx.moveTo(0, -7);
-        ctx.lineTo(5, 6);
-        ctx.lineTo(0, 3);
-        ctx.lineTo(-5, 6);
+        ctx.moveTo(0, -6);
+        ctx.lineTo(4.5, 5);
+        ctx.lineTo(0, 2.5);
+        ctx.lineTo(-4.5, 5);
         ctx.closePath();
         ctx.fillStyle = riskColor;
         ctx.fill();
-        ctx.strokeStyle = '#050910';
-        ctx.lineWidth = 1;
+        ctx.strokeStyle = '#060a12';
+        ctx.lineWidth = 0.8;
         ctx.stroke();
         ctx.restore();
 
-        // 6d. Selection Reticle / Targeting Box
+        // 6d. Selection Reticle
         if (isSelected) {
-          ctx.strokeStyle = '#38bdf8';
-          ctx.lineWidth = 1.5;
-          const boxSize = 14;
+          ctx.strokeStyle = '#0284c7';
+          ctx.lineWidth = 1.4;
+          const boxSize = 13;
 
-          // Corner bracket reticle
-          // Top-Left
+          // Corner brackets
           ctx.beginPath();
-          ctx.moveTo(sx - boxSize, sy - boxSize + 6);
+          // Top-Left
+          ctx.moveTo(sx - boxSize, sy - boxSize + 5);
           ctx.lineTo(sx - boxSize, sy - boxSize);
-          ctx.lineTo(sx - boxSize + 6, sy - boxSize);
+          ctx.lineTo(sx - boxSize + 5, sy - boxSize);
           // Top-Right
-          ctx.moveTo(sx + boxSize - 6, sy - boxSize);
+          ctx.moveTo(sx + boxSize - 5, sy - boxSize);
           ctx.lineTo(sx + boxSize, sy - boxSize);
-          ctx.lineTo(sx + boxSize, sy - boxSize + 6);
+          ctx.lineTo(sx + boxSize, sy - boxSize + 5);
           // Bottom-Right
-          ctx.moveTo(sx + boxSize, sy + boxSize - 6);
+          ctx.moveTo(sx + boxSize, sy + boxSize - 5);
           ctx.lineTo(sx + boxSize, sy + boxSize);
-          ctx.lineTo(sx + boxSize - 6, sy + boxSize);
+          ctx.lineTo(sx + boxSize - 5, sy + boxSize);
           // Bottom-Left
-          ctx.moveTo(sx - boxSize + 6, sy + boxSize);
+          ctx.moveTo(sx - boxSize + 5, sy + boxSize);
           ctx.lineTo(sx - boxSize, sy + boxSize);
-          ctx.lineTo(sx - boxSize, sy + boxSize - 6);
+          ctx.lineTo(sx - boxSize, sy + boxSize - 5);
           ctx.stroke();
 
-          // Reticle ring
+          // Reticle subtle ring
           ctx.beginPath();
-          ctx.arc(sx, sy, boxSize + 4, 0, Math.PI * 2);
-          ctx.strokeStyle = 'rgba(56, 189, 248, 0.4)';
-          ctx.setLineDash([2, 4]);
+          ctx.arc(sx, sy, boxSize + 3, 0, Math.PI * 2);
+          ctx.strokeStyle = 'rgba(2, 132, 199, 0.35)';
+          ctx.setLineDash([2, 3]);
           ctx.stroke();
           ctx.setLineDash([]);
         }
@@ -403,8 +396,8 @@ export const RadarView: React.FC<RadarViewProps> = ({
         // 6e. Hover highlight
         if (isHovered && !isSelected) {
           ctx.beginPath();
-          ctx.arc(sx, sy, 12, 0, Math.PI * 2);
-          ctx.strokeStyle = 'rgba(255, 255, 255, 0.6)';
+          ctx.arc(sx, sy, 10, 0, Math.PI * 2);
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
           ctx.lineWidth = 1;
           ctx.stroke();
         }
@@ -414,17 +407,16 @@ export const RadarView: React.FC<RadarViewProps> = ({
         ctx.textAlign = 'left';
         ctx.textBaseline = 'middle';
 
-        // Tag text box background
         const tagText = `${obj.callsign} [${Math.round(obj.altitudeM)}m]`;
         const textMetrics = ctx.measureText(tagText);
-        const tagX = sx + 10;
-        const tagY = sy - 10;
+        const tagX = sx + 9;
+        const tagY = sy - 9;
 
-        ctx.fillStyle = 'rgba(7, 11, 18, 0.85)';
-        ctx.fillRect(tagX - 2, tagY - 7, textMetrics.width + 6, 14);
-        ctx.strokeStyle = isSelected ? '#38bdf8' : 'rgba(56, 189, 248, 0.2)';
+        ctx.fillStyle = 'rgba(9, 14, 23, 0.88)';
+        ctx.fillRect(tagX - 2, tagY - 7, textMetrics.width + 5, 13);
+        ctx.strokeStyle = isSelected ? '#0284c7' : 'rgba(255, 255, 255, 0.12)';
         ctx.lineWidth = 0.8;
-        ctx.strokeRect(tagX - 2, tagY - 7, textMetrics.width + 6, 14);
+        ctx.strokeRect(tagX - 2, tagY - 7, textMetrics.width + 5, 13);
 
         ctx.fillStyle = isSelected ? '#ffffff' : '#cbd5e1';
         ctx.fillText(tagText, tagX + 1, tagY);
@@ -435,8 +427,8 @@ export const RadarView: React.FC<RadarViewProps> = ({
       // Outer boundary ring border
       ctx.beginPath();
       ctx.arc(cx, cy, radiusPx, 0, Math.PI * 2);
-      ctx.strokeStyle = '#203957';
-      ctx.lineWidth = 2;
+      ctx.strokeStyle = '#1e2e47';
+      ctx.lineWidth = 1.5;
       ctx.stroke();
 
       ctx.restore();
@@ -465,90 +457,95 @@ export const RadarView: React.FC<RadarViewProps> = ({
   ]);
 
   return (
-    <div className={styles.radarCard} ref={containerRef}>
+    <div className={styles.radarPanel} ref={containerRef}>
       {/* Radar Top Bar */}
-      <div className={styles.radarHeader}>
-        <div className={styles.radarTitleGroup}>
-          <Crosshair size={18} style={{ color: 'var(--accent-primary)' }} />
-          <span>Sector PPI Radar Display (Simulated Cartesian 10km)</span>
+      <div className={styles.header}>
+        <div className={styles.titleArea}>
+          <div className={styles.title}>
+            <Crosshair size={16} style={{ color: 'var(--accent-primary)' }} />
+            <span>Airspace Radar PPI</span>
+          </div>
+          <span className={styles.badge}>10km Aperture</span>
         </div>
 
-        <div className={styles.radarControls}>
-          {/* Zoom Controls */}
-          <button
-            type="button"
-            className={styles.controlBtn}
-            onClick={handleZoomIn}
-            title="Zoom In"
-            aria-label="Zoom In Radar"
-          >
-            <ZoomIn size={13} />
-          </button>
-          <button
-            type="button"
-            className={styles.controlBtn}
-            onClick={handleZoomOut}
-            title="Zoom Out"
-            aria-label="Zoom Out Radar"
-          >
-            <ZoomOut size={13} />
-          </button>
-          <button
-            type="button"
-            className={styles.controlBtn}
-            onClick={handleResetZoom}
-            title="Reset Zoom to 1x"
-            aria-label="Reset Zoom"
-          >
-            <RotateCcw size={13} />
-            <span>{zoomLevel}x</span>
-          </button>
+        <div className={styles.controlsGroup}>
+          {/* Zoom Segmented Control */}
+          <div className={styles.segmentedControl} role="group" aria-label="Radar Zoom Controls">
+            <button
+              type="button"
+              className={styles.toolBtn}
+              onClick={handleZoomIn}
+              title="Zoom In"
+              aria-label="Zoom In Radar"
+            >
+              <ZoomIn size={13} />
+            </button>
+            <button
+              type="button"
+              className={styles.toolBtn}
+              onClick={handleZoomOut}
+              title="Zoom Out"
+              aria-label="Zoom Out Radar"
+            >
+              <ZoomOut size={13} />
+            </button>
+            <button
+              type="button"
+              className={styles.toolBtn}
+              onClick={handleResetZoom}
+              title="Reset Zoom to 1x"
+              aria-label="Reset Zoom"
+            >
+              <RotateCcw size={12} />
+              <span>{zoomLevel}x</span>
+            </button>
+          </div>
 
-          {/* Toggle Prediction Paths */}
-          <button
-            type="button"
-            className={`${styles.controlBtn} ${showPredictions ? styles.controlBtnActive : ''}`}
-            onClick={() => setShowPredictions(!showPredictions)}
-            title="Toggle Trajectory Predictions"
-            aria-pressed={showPredictions}
-          >
-            <Eye size={13} />
-            <span>Paths</span>
-          </button>
-
-          {/* Prediction Horizon Selector */}
-          <div style={{ display: 'inline-flex', gap: '2px', alignItems: 'center' }}>
+          {/* Prediction Horizon Segmented Control */}
+          <div className={styles.segmentedControl} role="group" aria-label="Prediction Horizon">
             {[15, 30, 60].map((h) => (
               <button
                 key={h}
                 type="button"
-                className={`${styles.controlBtn} ${
-                  predictionHorizonSec === h ? styles.controlBtnActive : ''
+                className={`${styles.toolBtn} ${
+                  predictionHorizonSec === h ? styles.toolBtnActive : ''
                 }`}
                 onClick={() => onHorizonChange(h)}
-                title={`Set prediction horizon to ${h}s`}
+                title={`Set projection horizon to ${h}s`}
               >
                 +{h}s
               </button>
             ))}
           </div>
 
-          {/* Toggle Zones */}
-          <button
-            type="button"
-            className={`${styles.controlBtn} ${showZones ? styles.controlBtnActive : ''}`}
-            onClick={() => setShowZones(!showZones)}
-            title="Toggle Restricted Geofence Overlays"
-            aria-pressed={showZones}
-          >
-            <Compass size={13} />
-            <span>Zones</span>
-          </button>
+          {/* Toggles */}
+          <div className={styles.segmentedControl}>
+            <button
+              type="button"
+              className={`${styles.toolBtn} ${showPredictions ? styles.toolBtnActive : ''}`}
+              onClick={() => setShowPredictions(!showPredictions)}
+              title="Toggle Trajectory Projections"
+              aria-pressed={showPredictions}
+            >
+              <Route size={13} />
+              <span>Paths</span>
+            </button>
+            <button
+              type="button"
+              className={`${styles.toolBtn} ${showZones ? styles.toolBtnActive : ''}`}
+              onClick={() => setShowZones(!showZones)}
+              title="Toggle Restricted Geofences"
+              aria-pressed={showZones}
+            >
+              <Compass size={13} />
+              <span>Zones</span>
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Main Interactive Canvas */}
-      <div className={styles.canvasContainer}>
+      <div className={styles.viewportContainer}>
         <canvas
           ref={canvasRef}
           className={styles.canvas}
@@ -556,40 +553,40 @@ export const RadarView: React.FC<RadarViewProps> = ({
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
           style={{ cursor: hoveredObjectId ? 'pointer' : 'crosshair' }}
-          aria-label="Interactive Tactical Radar Display with Tracked Aerial Objects"
+          aria-label="Interactive Airspace Radar PPI Display"
           role="img"
         />
 
-        {/* Live Coordinate Cursor Readout */}
+        {/* Live Cursor Coordinate Readout */}
         {mouseCoord && (
-          <div className={styles.radarCoordTooltip}>
-            CURSOR: X={mouseCoord.x}m, Y={mouseCoord.y}m | RANGE: {Math.round(Math.hypot(mouseCoord.x, mouseCoord.y))}m
+          <div className={styles.cursorReadout}>
+            X: {mouseCoord.x}m · Y: {mouseCoord.y}m · Range: {Math.round(Math.hypot(mouseCoord.x, mouseCoord.y))}m
           </div>
         )}
       </div>
 
-      {/* Radar Bottom Legend Bar */}
-      <div className={styles.legendBar}>
-        <div className={styles.legendItems}>
+      {/* Radar Bottom Legend */}
+      <div className={styles.footer}>
+        <div className={styles.legendList}>
           <div className={styles.legendItem}>
-            <span className={styles.dotLow} />
-            <span>Low Risk (0-39)</span>
+            <span className={`${styles.legendDot} ${styles.dotLow}`} />
+            <span>Low (0–39)</span>
           </div>
           <div className={styles.legendItem}>
-            <span className={styles.dotMedium} />
-            <span>Medium Risk (40-69)</span>
+            <span className={`${styles.legendDot} ${styles.dotMedium}`} />
+            <span>Medium (40–69)</span>
           </div>
           <div className={styles.legendItem}>
-            <span className={styles.dotHigh} />
-            <span>High Risk (70-100)</span>
+            <span className={`${styles.legendDot} ${styles.dotHigh}`} />
+            <span>High (70–100)</span>
           </div>
           <div className={styles.legendItem}>
-            <span className={styles.dotRestricted} />
-            <span>Restricted Perimeter / Buffer</span>
+            <span className={styles.dotZone} />
+            <span>Restricted Geofence</span>
           </div>
         </div>
         <div>
-          <span>Click track marker to inspect telemetry & explainable risk</span>
+          <span>Click any marker to inspect telemetry</span>
         </div>
       </div>
     </div>

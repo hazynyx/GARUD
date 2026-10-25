@@ -1,5 +1,5 @@
 import React from 'react';
-import { Play, Pause, RotateCcw, FastForward, Clock } from 'lucide-react';
+import { Play, Pause, RotateCcw, Clock } from 'lucide-react';
 import styles from './SimulationControls.module.css';
 import { SCENARIOS } from '../features/simulation/scenarios';
 
@@ -36,17 +36,17 @@ export const SimulationControls: React.FC<SimulationControlsProps> = ({
   const speedOptions = [0.5, 1.0, 2.0, 5.0];
 
   return (
-    <nav className={styles.controlsBar} aria-label="Simulation Playback Controls">
-      {/* Playback action buttons */}
-      <div className={styles.playbackGroup}>
+    <div className={styles.toolbar} role="toolbar" aria-label="Simulation Controls">
+      {/* Primary Playback controls */}
+      <div className={styles.leftGroup}>
         <button
           type="button"
-          className={`${styles.btn} ${isRunning ? styles.btnDanger : styles.btnPrimary}`}
+          className={`${styles.btn} ${isRunning ? styles.btnWarning : styles.btnPrimary}`}
           onClick={onToggleRunning}
           aria-label={isRunning ? 'Pause Simulation' : 'Resume Simulation'}
           title={isRunning ? 'Pause simulation (Space)' : 'Resume simulation (Space)'}
         >
-          {isRunning ? <Pause size={15} /> : <Play size={15} />}
+          {isRunning ? <Pause size={14} /> : <Play size={14} />}
           <span>{isRunning ? 'Pause' : 'Resume'}</span>
         </button>
 
@@ -55,15 +55,14 @@ export const SimulationControls: React.FC<SimulationControlsProps> = ({
           className={styles.btn}
           onClick={onReset}
           aria-label="Reset Simulation to Initial State"
-          title="Reset tracks to initial scenario positions"
+          title="Reset to initial state (R)"
         >
-          <RotateCcw size={15} />
+          <RotateCcw size={14} />
           <span>Reset</span>
         </button>
 
-        {/* Speed multiplier selector */}
-        <div className={styles.speedSelector} role="group" aria-label="Simulation Speed Multiplier">
-          <FastForward size={14} style={{ margin: '0 4px', color: 'var(--text-muted)' }} />
+        {/* Speed multiplier segmented control */}
+        <div className={styles.speedGroup} role="group" aria-label="Simulation Speed Multiplier">
           {speedOptions.map((speed) => (
             <button
               key={speed}
@@ -81,31 +80,32 @@ export const SimulationControls: React.FC<SimulationControlsProps> = ({
         </div>
       </div>
 
-      {/* Scenario Preset Selector */}
-      <div className={styles.scenarioGroup}>
-        <label htmlFor="scenario-select" className={styles.scenarioLabel}>
-          Tactical Scenario:
-        </label>
-        <select
-          id="scenario-select"
-          className={styles.scenarioSelect}
-          value={selectedScenarioId}
-          onChange={(e) => onScenarioChange(e.target.value)}
-          aria-label="Select Operational Scenario"
-        >
-          {SCENARIOS.map((sc) => (
-            <option key={sc.id} value={sc.id}>
-              {sc.name}
-            </option>
-          ))}
-        </select>
-      </div>
+      {/* Scenario Presets & Simulation Clock */}
+      <div className={styles.leftGroup}>
+        <div className={styles.scenarioGroup}>
+          <label htmlFor="scenario-select" className={styles.scenarioLabel}>
+            Scenario:
+          </label>
+          <select
+            id="scenario-select"
+            className={styles.scenarioSelect}
+            value={selectedScenarioId}
+            onChange={(e) => onScenarioChange(e.target.value)}
+            aria-label="Select Operational Scenario"
+          >
+            {SCENARIOS.map((sc) => (
+              <option key={sc.id} value={sc.id}>
+                {sc.name}
+              </option>
+            ))}
+          </select>
+        </div>
 
-      {/* Simulation Clock Readout */}
-      <div className={styles.clockBadge} title="Elapsed Simulation Clock">
-        <Clock size={15} />
-        <span>SIM_TIME: T+{formatTime(simTimeSec)}</span>
+        <div className={styles.clockBadge} title="Elapsed Simulation Clock">
+          <Clock size={13} style={{ color: 'var(--text-muted)' }} />
+          <span>T+{formatTime(simTimeSec)}</span>
+        </div>
       </div>
-    </nav>
+    </div>
   );
 };

@@ -14,12 +14,13 @@
 
 Unmanned Aerial Systems (UAS / drones) represent an asymmetric challenge in modern airspace defense. Operators tasked with securing critical infrastructure, airports, military bases, and VIP perimeters face an overwhelming volume of conflicting sensory data: fragmented tracks, inconsistent coordinate systems, and sudden risk escalations.
 
-**GARUD** provides an integrated Command and Control (C2) situational awareness dashboard designed to:
+**GARUD** provides an integrated Command and Control (C2) situational awareness dashboard designed with an **editorial Bento-grid architecture** inspired by contemporary aviation systems and high-precision defense technology:
 1. **Unify Sector Situational Awareness:** Monitor 10+ simultaneous simulated aerial tracks with high-fidelity telemetry in real-time.
 2. **Project Short-Term Kinematics:** Forecast deterministic constant-velocity trajectories over configurable 15s, 30s, and 60s prediction horizons with expanding uncertainty bounds.
 3. **Deliver Explainable Risk Scoring:** Demystify risk classification into clear **Low**, **Medium**, and **High** tiers, providing watchstanders with an explicit breakdown of causal factors (perimeter breach, closing approach velocity, RemoteID absence, low-altitude terrain masking).
 4. **Prevent Alert Fatigue:** Filter alerts through state-transition logic, debouncing repeat notifications while preserving urgent critical perimeter incursions and enabling rapid acknowledgement.
-5. **Operate 100% Offline:** Rely on local HTML5 Canvas and mathematical models without requiring external map tile providers, remote APIs, or network connectivity.
+5. **Restrained, Intelligent Visual Identity:** A light, architectural shell with crisp typography, tabular figures, and a purposeful dark-aperture radar display, eliminating generic AI dashboard tropes (neon cyan outlines, fake gauges, and walls of shouting uppercase).
+6. **Operate 100% Offline:** Rely on local HTML5 Canvas and mathematical models without requiring external map tile providers, remote APIs, or network connectivity.
 
 ---
 
@@ -83,7 +84,7 @@ Unmanned Aerial Systems (UAS / drones) represent an asymmetric challenge in mode
 | **Radar Display** | HTML5 Canvas (2D Context) | Hardware-accelerated 60fps rendering, high-DPI scaling, zero external map dependencies |
 | **Charts** | [Recharts 2.15](https://recharts.org/) | Responsive timeseries telemetry sparklines |
 | **Icons** | [Lucide React](https://lucide.dev/) | Clean, accessible iconography |
-| **Styles** | Modular CSS + CSS Custom Properties | Dark-themed military C2 palette, high-contrast accessible states, reduced-motion compliance |
+| **Styles** | Modular CSS + CSS Custom Properties | Modern Bento-grid design system with warm neutral background, clean white surfaces, deep tactical emerald accent, tabular numerals, and purposeful dark radar viewport |
 | **Testing** | [Vitest 3](https://vitest.dev/) + [React Testing Library](https://testing-library.com/) | Fast unit testing for pure mathematical domain models and components |
 | **Linting** | [ESLint 9](https://eslint.org/) | Enforces code quality, clean architecture, and type standards |
 
@@ -232,3 +233,14 @@ A positive value signifies active vectoring toward the protected area.
 - **Radio Frequency (RF) Spectrum Heatmap:** Visualizing simulated RF signal propagation and jamming interference patterns.
 - **RemoteID Protocol Parser:** Integration of mock ASTM F3411-22a Remote ID broadcast decoders.
 - **Multi-Operator Collaboration:** WebSocket sync for coordinated watchstanding teams.
+
+---
+
+## 10. Visual Identity & Bento-Grid Design System
+
+GARUD adheres to a defense-grade editorial design language:
+- **Calm, High-Contrast Light Shell:** Clean off-white app canvas (`#f8fafc`) with crisp white surface panels and subtle borders (`#e2e8f0`).
+- **Tactical Dark Radar Centerpiece:** Embedded high-contrast dark PPI aperture (`#090e17`) dedicated specifically to radar visualization where black backgrounds maximize phosphor target visibility.
+- **Tabular Figures:** Telemetry metrics use `tabular-nums` for rock-solid stability during continuous 4 Hz updates.
+- **Restrained Color Hierarchy:** Color is used exclusively for functional operational communication (tactical emerald for authenticated friendlies and low risk, muted amber for caution buffers, and controlled crimson for prohibited perimeter incursions).
+- **Asymmetric Bento Overview:** Replaces repetitive identical metric cards with an executive overview panel incorporating proportional risk distribution bars and alert readiness states.

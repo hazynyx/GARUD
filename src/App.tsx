@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { ShieldAlert, Radio, Activity, Cpu } from 'lucide-react';
+import { ShieldAlert, Radio, Activity } from 'lucide-react';
 import styles from './App.module.css';
 import {
   initializeSimulation,
@@ -44,7 +44,6 @@ export const App: React.FC = () => {
   // Keyboard shortcut listener (Space = Pause/Resume, R = Reset)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Ignore if user is inside an input or select
       if (['INPUT', 'SELECT', 'TEXTAREA'].includes((e.target as HTMLElement)?.tagName)) {
         return;
       }
@@ -94,7 +93,7 @@ export const App: React.FC = () => {
     setSimState((prev) => clearAlerts(prev));
   }, []);
 
-  // Find currently selected object
+  // Selected object memo
   const selectedObject = useMemo(() => {
     return simState.objects.find((o) => o.id === simState.selectedObjectId) ?? simState.objects[0] ?? null;
   }, [simState.objects, simState.selectedObjectId]);
@@ -109,45 +108,39 @@ export const App: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      {/* Persistent Simulation Warning Banner */}
+      {/* Simulation Warning Banner */}
       <aside className={styles.simBanner} role="status" aria-label="Simulation Mode Indicator">
-        <ShieldAlert className={styles.simBannerIcon} size={16} />
+        <ShieldAlert className={styles.simBannerIcon} size={15} />
         <span>SIMULATION MODE — NOT LIVE SENSOR DATA • SYNTHETIC TEST TELEMETRY ONLY</span>
       </aside>
 
       {/* Main Tactical C2 Header */}
       <header className={styles.header}>
-        <div className={styles.brand}>
+        <div className={styles.brandArea}>
           <div className={styles.brandIcon}>
-            <Radio size={28} />
+            <Radio size={20} />
           </div>
-          <div>
+          <div className={styles.brandText}>
             <h1 className={styles.brandTitle}>
-              GARUD 🦅 <span className={styles.brandSubtitle}>Counter-Drone Monitoring & Airspace Security</span>
+              GARUD 🦅
             </h1>
+            <span className={styles.brandSubtitle}>Counter-Drone Monitoring & Airspace Security</span>
           </div>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
-          <div className={styles.systemBadge}>
-            <Cpu size={14} />
-            <span>CORE: {simState.isRunning ? 'ACTIVE TICK' : 'STANDBY'}</span>
+        <div className={styles.headerStatus}>
+          <div className={styles.statusPill}>
+            <span className={simState.isRunning ? styles.liveDot : styles.pausedDot} />
+            <span>{simState.isRunning ? 'Active Simulation' : 'Paused'}</span>
           </div>
 
-          <div className={styles.systemBadge}>
-            <span
-              className={styles.systemStatusLive}
-              style={{
-                backgroundColor: simState.isRunning ? 'var(--risk-low)' : 'var(--risk-medium)',
-                boxShadow: simState.isRunning ? '0 0 8px var(--risk-low)' : 'none',
-              }}
-            />
-            <span>SIM_CLOCK: {formattedSimClock}</span>
+          <div className={styles.statusPill} style={{ fontFamily: 'var(--font-mono)' }}>
+            <span>Clock: {formattedSimClock}</span>
           </div>
         </div>
       </header>
 
-      {/* Main Dashboard Body */}
+      {/* Main Dashboard Bento Workspace */}
       <main className={styles.mainContent}>
         {/* Playback & Scenario Controls Bar */}
         <SimulationControls
@@ -161,13 +154,13 @@ export const App: React.FC = () => {
           onScenarioChange={handleScenarioChange}
         />
 
-        {/* Metric Overview Cards */}
+        {/* Bento Overview Metrics */}
         <OverviewCards objects={simState.objects} alerts={simState.alerts} />
 
-        {/* Tactical Airspace Operations Grid */}
-        <div className={styles.grid}>
-          {/* Left Column: Tactical PPI Radar & Telemetry Charts */}
-          <section className={styles.radarSection} aria-label="Tactical Airspace View">
+        {/* Primary Workspace Bento Grid */}
+        <div className={styles.bentoGrid}>
+          {/* Primary Left Column: Radar Centerpiece & Kinematic Profile */}
+          <section className={styles.leftWorkspace} aria-label="Primary Radar Workspace">
             <RadarView
               objects={simState.objects}
               zones={simState.zones}
@@ -177,12 +170,11 @@ export const App: React.FC = () => {
               onHorizonChange={handleHorizonChange}
             />
 
-            {/* Historical Telemetry Charts */}
             <TelemetryCharts selectedObject={selectedObject} />
           </section>
 
-          {/* Right Column: Track Details / Explainable Risk & Security Alert Stream */}
-          <aside className={styles.sideSection} aria-label="Telemetry and Alerts">
+          {/* Secondary Right Column: Track Telemetry & Security Alerts */}
+          <aside className={styles.rightWorkspace} aria-label="Selected Target and Security Alerts">
             <ObjectDetails
               object={selectedObject}
               zones={simState.zones}
@@ -199,14 +191,14 @@ export const App: React.FC = () => {
         </div>
       </main>
 
-      {/* Tactical C2 Footer */}
+      {/* Understated C2 Footer */}
       <footer className={styles.footer}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
           <Activity size={14} style={{ color: 'var(--accent-primary)' }} />
-          <span>GARUD Airspace Surveillance Prototype • Version 0.2-hackathon</span>
+          <span>GARUD Tactical Airspace Platform · Decision-Support Prototype</span>
         </div>
         <div>
-          <span>Decision Support Only — No Weapon, Jamming, or Interception Capabilities Integrated</span>
+          <span>Passive situational monitoring only · No weapon or kinetic effector systems integrated</span>
         </div>
       </footer>
     </div>

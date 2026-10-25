@@ -1,80 +1,107 @@
-.radarCard {
-  background-color: var(--radar-bg);
+.radarPanel {
+  background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
-  position: relative;
+  box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.6);
+  transition: border-color 0.15s ease;
 }
 
-.radarHeader {
+.radarPanel:hover {
+  border-color: var(--border-strong);
+}
+
+.header {
+  padding: 10px 16px;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-subtle);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 16px;
-  background: rgba(13, 21, 36, 0.9);
-  border-bottom: 1px solid var(--border-subtle);
-  backdrop-filter: blur(8px);
-  z-index: 10;
+  gap: 12px;
   flex-wrap: wrap;
-  gap: 10px;
 }
 
-.radarTitleGroup {
+.titleArea {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  color: var(--text-primary);
-  text-transform: uppercase;
 }
 
-.radarControls {
+.title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-main);
   display: flex;
   align-items: center;
   gap: 6px;
+}
+
+.badge {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: var(--bg-surface-subtle);
+  border: 1px solid var(--border-subtle);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.controlsGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
-.controlBtn {
-  background: var(--bg-card);
-  border: 1px solid var(--border-medium);
-  color: var(--text-secondary);
+.segmentedControl {
+  display: inline-flex;
+  align-items: center;
+  background: var(--bg-surface-subtle);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-sm);
+  padding: 2px;
+  gap: 2px;
+}
+
+.toolBtn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  border-radius: 4px;
   padding: 4px 8px;
-  font-size: 0.72rem;
+  font-size: 0.75rem;
+  font-weight: 500;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  transition: all 0.15s ease;
+  transition: all 0.12s ease;
 }
 
-.controlBtn:hover {
-  background: var(--bg-card-hover);
-  color: var(--text-primary);
-  border-color: var(--accent-primary);
+.toolBtn:hover {
+  color: var(--text-main);
 }
 
-.controlBtnActive {
-  background: rgba(56, 189, 248, 0.15);
-  border-color: var(--accent-primary);
-  color: var(--accent-primary);
+.toolBtnActive {
+  background: var(--bg-surface);
+  color: var(--text-main);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  font-weight: 600;
 }
 
-.canvasContainer {
+.viewportContainer {
   position: relative;
   width: 100%;
-  height: 540px;
-  min-height: 440px;
+  height: 480px;
+  min-height: 380px;
+  background: var(--radar-bg);
   display: flex;
   align-items: center;
   justify-content: center;
-  user-select: none;
+  overflow: hidden;
 }
 
 .canvas {
@@ -83,20 +110,35 @@
   display: block;
 }
 
-.legendBar {
+.cursorReadout {
+  position: absolute;
+  top: 10px;
+  left: 12px;
+  background: rgba(9, 14, 23, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--radar-text);
+  pointer-events: none;
+  backdrop-filter: blur(4px);
+}
+
+.footer {
   padding: 8px 16px;
-  background: rgba(9, 13, 22, 0.95);
+  background: var(--bg-surface);
   border-top: 1px solid var(--border-subtle);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   color: var(--text-muted);
   flex-wrap: wrap;
   gap: 12px;
 }
 
-.legendItems {
+.legendList {
   display: flex;
   align-items: center;
   gap: 14px;
@@ -106,51 +148,31 @@
 .legendItem {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
+}
+
+.legendDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
 }
 
 .dotLow {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
   background: var(--risk-low);
-  box-shadow: 0 0 6px var(--risk-low);
 }
 
 .dotMedium {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
   background: var(--risk-medium);
-  box-shadow: 0 0 6px var(--risk-medium);
 }
 
 .dotHigh {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
   background: var(--risk-high);
-  box-shadow: 0 0 6px var(--risk-high);
 }
 
-.dotRestricted {
+.dotZone {
   width: 8px;
   height: 8px;
   border-radius: 2px;
-  background: rgba(239, 68, 68, 0.6);
-  border: 1px solid #ef4444;
-}
-
-.radarCoordTooltip {
-  position: absolute;
-  bottom: 12px;
-  left: 12px;
-  background: rgba(13, 21, 36, 0.85);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-sm);
-  padding: 4px 8px;
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  color: var(--text-secondary);
-  pointer-events: none;
+  background: rgba(220, 38, 38, 0.3);
+  border: 1px solid var(--risk-high);
 }

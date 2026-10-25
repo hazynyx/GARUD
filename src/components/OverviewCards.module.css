@@ -1,108 +1,162 @@
-.container {
+.bentoOverview {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 14px;
+  grid-template-columns: 1fr;
+  gap: 12px;
   width: 100%;
 }
 
-.card {
-  background-color: var(--bg-card);
+@media (min-width: 768px) {
+  .bentoOverview {
+    grid-template-columns: 1fr 2fr 1.2fr;
+  }
+}
+
+.panel {
+  background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   padding: 14px 18px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  transition: transform 0.15s ease, border-color 0.15s ease;
-  position: relative;
-  overflow: hidden;
+  justify-content: space-between;
+  gap: 10px;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.15s ease;
 }
 
-.card:hover {
-  border-color: var(--border-medium);
-  transform: translateY(-1px);
+.panel:hover {
+  border-color: var(--border-strong);
 }
 
-.cardHeader {
+.panelHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 0.76rem;
-  color: var(--text-secondary);
+  font-size: 0.75rem;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
 }
 
-.iconWrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: var(--radius-sm);
-  background: var(--bg-secondary);
-}
-
-.valueRow {
+.primaryStatRow {
   display: flex;
   align-items: baseline;
   gap: 8px;
 }
 
-.cardValue {
-  font-family: var(--font-mono);
-  font-size: 1.8rem;
+.statBig {
+  font-size: 2rem;
   font-weight: 700;
   line-height: 1;
+  color: var(--text-main);
+  font-variant-numeric: tabular-nums;
 }
 
-.cardSubtext {
+.statLabel {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+}
+
+/* Distribution Bar */
+.distBar {
+  display: flex;
+  height: 6px;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  background: var(--bg-surface-subtle);
+  margin: 4px 0;
+}
+
+.distSegmentLow {
+  background: var(--risk-low);
+  transition: width 0.3s ease;
+}
+
+.distSegmentMedium {
+  background: var(--risk-medium);
+  transition: width 0.3s ease;
+}
+
+.distSegmentHigh {
+  background: var(--risk-high);
+  transition: width 0.3s ease;
+}
+
+/* Tiers Row */
+.tiersRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.tierPill {
+  display: flex;
+  flex-direction: column;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
   font-size: 0.75rem;
-  color: var(--text-muted);
 }
 
-/* Severity-specific styles */
-.low {
-  border-left: 3px solid var(--risk-low);
-}
-.low .cardValue {
-  color: var(--risk-low);
-}
-.low .iconWrapper {
-  color: var(--risk-low);
+.tierPillLow {
   background: var(--risk-low-bg);
+  border: 1px solid var(--risk-low-border);
+  color: var(--risk-low-text);
 }
 
-.medium {
-  border-left: 3px solid var(--risk-medium);
-}
-.medium .cardValue {
-  color: var(--risk-medium);
-}
-.medium .iconWrapper {
-  color: var(--risk-medium);
+.tierPillMedium {
   background: var(--risk-medium-bg);
+  border: 1px solid var(--risk-medium-border);
+  color: var(--risk-medium-text);
 }
 
-.high {
-  border-left: 3px solid var(--risk-high);
-}
-.high .cardValue {
-  color: var(--risk-high);
-}
-.high .iconWrapper {
-  color: var(--risk-high);
+.tierPillHigh {
   background: var(--risk-high-bg);
+  border: 1px solid var(--risk-high-border);
+  color: var(--risk-high-text);
 }
 
-.alertActive {
-  border-left: 3px solid var(--accent-primary);
+.tierCount {
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
 }
-.alertActive .cardValue {
-  color: var(--accent-primary);
+
+.tierName {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  opacity: 0.9;
 }
-.alertActive .iconWrapper {
-  color: var(--accent-primary);
-  background: rgba(56, 189, 248, 0.12);
+
+/* Alert summary */
+.alertStatusRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.alertBadgeUrgent {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  background: var(--risk-high-bg);
+  border: 1px solid var(--risk-high-border);
+  color: var(--risk-high-text);
+}
+
+.alertBadgeNominal {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  background: var(--risk-low-bg);
+  border: 1px solid var(--risk-low-border);
+  color: var(--risk-low-text);
 }

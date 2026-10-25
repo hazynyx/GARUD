@@ -2,15 +2,15 @@
 
 ## Phase 0 --- Project Setup
 
--   [ ] Create a React + TypeScript + Vite project.
--   [ ] Add linting and a test runner.
--   [ ] Create the initial responsive dashboard shell.
--   [ ] Add a persistent "SIMULATION MODE --- NOT LIVE SENSOR DATA"
+-   [x] Create a React + TypeScript + Vite project.
+-   [x] Add linting and a test runner.
+-   [x] Create the initial responsive dashboard shell.
+-   [x] Add a persistent "SIMULATION MODE --- NOT LIVE SENSOR DATA"
     label.
--   [ ] Confirm `npm run dev` and `npm run build` work.
+-   [x] Confirm `npm run dev` and `npm run build` work.
 
 **Exit criteria:** The app starts cleanly and displays the dashboard
-shell.
+shell. (COMPLETE)
 
 ## Phase 1 --- Simulation Engine
 

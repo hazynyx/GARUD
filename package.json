@@ -1,0 +1,35 @@
+{
+  "name": "garud-airspace-monitor",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint \"src/**/*.{ts,tsx}\""
+  },
+  "dependencies": {
+    "lucide-react": "^1.16.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "recharts": "^2.15.1"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.2.0",
+    "@types/node": "^22.13.1",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@typescript-eslint/eslint-plugin": "^8.24.0",
+    "@typescript-eslint/parser": "^8.24.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "eslint": "^9.20.1",
+    "jsdom": "^26.0.0",
+    "typescript": "~5.7.3",
+    "vite": "^6.1.0",
+    "vitest": "^3.0.5"
+  }
+}

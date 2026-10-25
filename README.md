@@ -33,7 +33,17 @@ Airspace monitoring against unauthorized unmanned aerial systems (UAS / drones) 
   - Strict TypeScript configuration and ESLint 9 code linting.
   - Production build pipeline verified and functional.
 
-*(Additional phases in active implementation: Simulation Engine, Radar Canvas View, Telemetry Inspection, Trajectory Projection, Explainable Risk Engine, and Alert Feeds).*
+- **Phase 1 Simulation Engine & Domain Logic Complete:**
+  - Deterministic simulation engine with pure immutable state stepping (`src/features/simulation/simulationEngine.ts`).
+  - Stable tracked object models with ID persistence, callsigns, coordinate tracking, altitude, speed, heading, and RSSI telemetry.
+  - Three distinct operational scenarios:
+    1. *Standard Sector Surveillance*: 12 mixed commercial, friendly, and uncooperative aerial tracks.
+    2. *Critical Perimeter Incursion*: High-speed swarm intruder scenario testing high-risk escalations.
+    3. *Dense Urban Approach Corridor*: 14 tracks evaluating multi-altitude separation and corridor congestion.
+  - Transparent constant-velocity kinematic projection (`src/features/tracking/prediction.ts`) with synthetic uncertainty expansion.
+  - Multi-factor explainable risk evaluation (`src/features/risk/riskScoring.ts`) assessing zone proximity, approach rate vector, RemoteID status, and flight anomalies.
+  - State-transition alert detection (`src/features/alerts/alertRules.ts`) with anti-spam cooldown and acknowledgement handling.
+  - Full automated unit test suite covering kinematics, edge cases, pause/resume, and reset behaviors.
 
 ---
 
@@ -129,7 +139,7 @@ npm run preview
 ## 7. Development Roadmap
 
 - [x] **Phase 0: Project Setup & Baseline Shell**
-- [ ] **Phase 1: Simulation Engine & Core Data Models**
+- [x] **Phase 1: Simulation Engine & Core Data Models**
 - [ ] **Phase 2: Tactical Radar PPI & Telemetry Inspection**
 - [ ] **Phase 3: Trajectory Prediction & Kinematic Horizons**
 - [ ] **Phase 4: Explainable Risk Scoring Engine**

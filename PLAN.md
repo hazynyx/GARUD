@@ -14,17 +14,17 @@ shell. (COMPLETE)
 
 ## Phase 1 --- Simulation Engine
 
--   [ ] Define types for tracked objects, scenarios, telemetry history,
+-   [x] Define types for tracked objects, scenarios, telemetry history,
     and alerts.
--   [ ] Create at least 10 simulated objects with stable IDs.
--   [ ] Generate deterministic initial positions and motion.
--   [ ] Implement start, pause, resume, reset, and simulation-speed
+-   [x] Create at least 10 simulated objects with stable IDs.
+-   [x] Generate deterministic initial positions and motion.
+-   [x] Implement start, pause, resume, reset, and simulation-speed
     controls.
--   [ ] Ensure timers are cleaned up and state does not drift between
+-   [x] Ensure timers are cleaned up and state does not drift between
     components.
--   [ ] Add unit tests for state advancement and reset behavior.
+-   [x] Add unit tests for state advancement and reset behavior.
 
-**Exit criteria:** Objects update consistently and all controls work.
+**Exit criteria:** Objects update consistently and all controls work. (COMPLETE)
 
 ## Phase 2 --- Tracking Dashboard
 

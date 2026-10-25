@@ -1,0 +1,108 @@
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+  width: 100%;
+}
+
+.card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.card:hover {
+  border-color: var(--border-medium);
+  transform: translateY(-1px);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.76rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-secondary);
+}
+
+.valueRow {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.cardValue {
+  font-family: var(--font-mono);
+  font-size: 1.8rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.cardSubtext {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* Severity-specific styles */
+.low {
+  border-left: 3px solid var(--risk-low);
+}
+.low .cardValue {
+  color: var(--risk-low);
+}
+.low .iconWrapper {
+  color: var(--risk-low);
+  background: var(--risk-low-bg);
+}
+
+.medium {
+  border-left: 3px solid var(--risk-medium);
+}
+.medium .cardValue {
+  color: var(--risk-medium);
+}
+.medium .iconWrapper {
+  color: var(--risk-medium);
+  background: var(--risk-medium-bg);
+}
+
+.high {
+  border-left: 3px solid var(--risk-high);
+}
+.high .cardValue {
+  color: var(--risk-high);
+}
+.high .iconWrapper {
+  color: var(--risk-high);
+  background: var(--risk-high-bg);
+}
+
+.alertActive {
+  border-left: 3px solid var(--accent-primary);
+}
+.alertActive .cardValue {
+  color: var(--accent-primary);
+}
+.alertActive .iconWrapper {
+  color: var(--accent-primary);
+  background: rgba(56, 189, 248, 0.12);
+}
